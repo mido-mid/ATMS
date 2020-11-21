@@ -16,7 +16,7 @@ class EmployeeController extends Controller
      */
     public function index()
     {
-        $employees = User::where('type',1)->orderBy('id', 'desc')->get();
+        $employees = User::where('type',2)->orderBy('id', 'desc')->get();
 
         return view('employees.index',compact('employees'));
     }
@@ -46,24 +46,26 @@ class EmployeeController extends Controller
             'email' => ['required', 'email', Rule::unique((new User)->getTable()), 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,3}$/'],
             'password' => ['required', 'min:8', 'confirmed','regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$@#%]).*$/'],
             'password_confirmation' => ['required', 'min:8'],
+            'department_id' => 'required|integer|min:0',
         ];
 
         $this->validate($request,$rules);
 
-        $admin = User::create([
+        $employee = User::create([
 
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'department_id' => $request->department_id
         ]);
 
-        if($admin)
+        if($employee)
         {
-            return redirect('admin/admins')->withStatus('admin successfully created');
+            return redirect('admin/employees')->withStatus('employee successfully created');
         }
         else
         {
-            return redirect('admin/admins')->withStatus('something went wrong, try again');
+            return redirect('admin/employees')->withStatus('something went wrong, try again');
         }
     }
 
@@ -87,6 +89,16 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         //
+        $employee = User::find($id);
+
+        if($employee)
+        {
+            return view('employees.create', compact('employee'));
+        }
+        else
+        {
+            return redirect('admin/employees')->withStatus('no employee have this id');
+        }
     }
 
     /**
@@ -99,6 +111,68 @@ class EmployeeController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $employee = User::find($id);
+
+        if($request->input('password') == null )
+        {
+            $rules = [
+                'name' => ['required','min:2','max:60','not_regex:/([%\$#\*<>]+)/'],
+                'email' => ['required', 'email', Rule::unique((new User)->getTable())->ignore($employee->id), 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,3}$/'],
+                'department_id' => 'required|integer|min:0',
+            ];
+
+            $this->validate($request,$rules);
+
+
+            if($employee)
+            {
+
+                $employee->update([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'department_id' => $request->department_id
+                ]);
+
+                return redirect('/admin/employees')->withStatus('employee information successfully updated.');
+            }
+            else
+            {
+                return redirect('admin/employees')->withStatus('no admin with this id');
+            }
+        }
+        else {
+            $rules = [
+                'name' => ['required','min:2','max:60','not_regex:/([%\$#\*<>]+)/'],
+                'email' => ['required', 'email', Rule::unique((new User)->getTable())->ignore($employee->id), 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,3}$/'],
+                'password' => ['required', 'min:8', 'confirmed', 'different:old_password', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$@#%]).*$/'],
+                'password_confirmation' => ['required', 'min:8'],
+                'department_id' => 'required|integer|min:0',
+            ];
+
+            $this->validate($request,$rules);
+
+
+            $password = password_hash($request->password,PASSWORD_DEFAULT);
+
+
+            if($employee)
+            {
+
+                $employee->update([
+
+                    'name' => $request->name ,
+                    'email' => $request->email ,
+                    'password' => $password,
+                    'department_id' => $request->department_id
+
+                ]);
+                return redirect('/admin/employees')->withStatus('employee information successfully updated.');
+            }
+            else
+            {
+                return redirect('admin/employees')->withStatus('no employee with this id');
+            }
+        }
     }
 
     /**
@@ -110,5 +184,13 @@ class EmployeeController extends Controller
     public function destroy($id)
     {
         //
+        $employee = User::find($id);
+
+        if($employee)
+        {
+            $employee->delete();
+            return redirect('/admin/employees')->withStatus(__('employee successfully deleted.'));
+        }
+        return redirect('/admin/employees')->withStatus(__('this id is not in our database'));
     }
 }

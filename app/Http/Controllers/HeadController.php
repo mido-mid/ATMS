@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rule;
 
 class HeadController extends Controller
 {
@@ -14,6 +17,9 @@ class HeadController extends Controller
     public function index()
     {
         //
+        $heads = User::where('type',1)->orderBy('id', 'desc')->get();
+
+        return view('heads.index',compact('heads'));
     }
 
     /**
@@ -24,6 +30,7 @@ class HeadController extends Controller
     public function create()
     {
         //
+        return view('heads.create');
     }
 
     /**
@@ -35,6 +42,30 @@ class HeadController extends Controller
     public function store(Request $request)
     {
         //
+        $rules = [
+            'name' => ['required','min:2','max:60','not_regex:/([%\$#\*<>]+)/'],
+            'email' => ['required', 'email', Rule::unique((new User)->getTable()), 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,3}$/'],
+            'password' => ['required', 'min:8', 'confirmed','regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$@#%]).*$/'],
+            'password_confirmation' => ['required', 'min:8'],
+        ];
+
+        $this->validate($request,$rules);
+
+        $head = User::create([
+
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        if($head)
+        {
+            return redirect('admin/heads')->withStatus('head successfully created');
+        }
+        else
+        {
+            return redirect('admin/heads')->withStatus('something went wrong, try again');
+        }
     }
 
     /**

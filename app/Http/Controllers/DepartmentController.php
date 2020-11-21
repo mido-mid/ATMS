@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Department;
+use App\User;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -42,9 +43,14 @@ class DepartmentController extends Controller
         //
         $rules = [
             'name' => ['required','min:2','max:60','not_regex:/([%\$#\*<>]+)/'],
+            'head' => 'required|integer|min:0',
         ];
 
         $this->validate($request,$rules);
+
+        $head = User::find($request->head);
+
+        $head->update(['type' => 1]);
 
         $department = Department::create([
             'name' => $request->name,
