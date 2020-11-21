@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Department;
 use Illuminate\Http\Request;
 
 class DepartmentController extends Controller
@@ -14,6 +15,9 @@ class DepartmentController extends Controller
     public function index()
     {
         //
+        $departments = Department::orderBy('id', 'desc')->get();
+
+        return view('departments.index',compact('departments'));
     }
 
     /**
@@ -24,6 +28,7 @@ class DepartmentController extends Controller
     public function create()
     {
         //
+        return view('departments.create');
     }
 
     /**
@@ -35,6 +40,24 @@ class DepartmentController extends Controller
     public function store(Request $request)
     {
         //
+        $rules = [
+            'name' => ['required','min:2','max:60','not_regex:/([%\$#\*<>]+)/'],
+        ];
+
+        $this->validate($request,$rules);
+
+        $department = Department::create([
+            'name' => $request->name,
+        ]);
+
+        if($department)
+        {
+            return redirect('admin/departments')->withStatus('department successfully created');
+        }
+        else
+        {
+            return redirect('admin/departments')->withStatus('something went wrong, try again');
+        }
     }
 
     /**
@@ -57,6 +80,16 @@ class DepartmentController extends Controller
     public function edit($id)
     {
         //
+        $department = Department::find($id);
+
+        if($department)
+        {
+            return view('departments.create', compact('department'));
+        }
+        else
+        {
+            return redirect('admin/departments')->withStatus('no department have this id');
+        }
     }
 
     /**
@@ -68,7 +101,28 @@ class DepartmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $rules = [
+            'name' => ['required','min:2','max:60','not_regex:/([%\$#\*<>]+)/'],
+        ];
+
+
+        $this->validate($request, $rules);
+
+        $department = Department::find($id);
+
+        if($department) {
+
+            $department->update([
+                'name' => $request->name,
+            ]);
+
+            return redirect('/admin/departments')->withStatus('department successfully updated');
+        }
+        else
+        {
+            return redirect('/admin/departments')->withStatus('no department have this id');
+        }
     }
 
     /**
@@ -80,5 +134,13 @@ class DepartmentController extends Controller
     public function destroy($id)
     {
         //
+        $department = Department::find($id);
+
+        if($department)
+        {
+            $department->delete();
+            return redirect('/admin/departments')->withStatus(__('department successfully deleted.'));
+        }
+        return redirect('/admin/departments')->withStatus(__('this id is not in our database'));
     }
 }

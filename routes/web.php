@@ -39,6 +39,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'admin','middleware' => ['auth','admin']],function() {
     Route::resource('admins', 'Admin\AdminController', ['except' => ['show']]);
+    Route::resource('departments', 'Admin\DepartmentController', ['except' => ['show']]);
+    Route::resource('employees', 'Admin\EmployeeController', ['except' => ['show']]);
 });
 
 Route::group(['prefix' => 'head','middleware' => ['auth','head']],function() {
