@@ -149,4 +149,5 @@ class DepartmentController extends Controller
         }
         return redirect('/admin/departments')->withStatus(__('this id is not in our database'));
     }
+
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 
@@ -16,6 +17,7 @@ class AdminController extends Controller
      */
     public function index()
     {
+
         $admins = User::where('type',0)->where('id','!=',auth()->user()->id)->orderBy('id', 'desc')->get();
 
         return view('admins.index',compact('admins'));
@@ -116,10 +118,9 @@ class AdminController extends Controller
         if($request->input('password') == null )
         {
             $rules = [
+
                 'name' => ['required','min:2','max:60','not_regex:/([%\$#\*<>]+)/'],
                 'email' => ['required', 'email', Rule::unique((new User)->getTable())->ignore($admin->id), 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,3}$/'],
-                'roles' => 'required',
-                'team_id' => 'required|integer|min:0',
             ];
 
             $this->validate($request,$rules);

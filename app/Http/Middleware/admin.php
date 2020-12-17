@@ -19,6 +19,6 @@ class admin
         if($user->type == 0){
             return $next($request);
         }
-        return back()->withStatus(__('you cannot access this page.'));
+        return redirect()->back()->withStatus(__('you cannot access this page.'));
     }
 }

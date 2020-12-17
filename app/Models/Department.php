@@ -9,7 +9,7 @@ class Department extends Model
     //
 
     protected $fillable = [
-        'name'
+        'name','start_time','end_time'
     ];
 
     public function employees()

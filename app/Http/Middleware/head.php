@@ -19,6 +19,6 @@ class head
         if($user->type == 1){
             return $next($request);
         }
-        return back()->withStatus(__('you cannot access this page.'));
+        return redirect()->back()->withStatus(__('you cannot access this page.'));
     }
 }

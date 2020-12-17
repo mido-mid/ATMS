@@ -14,9 +14,16 @@ class EmployeeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($department_id = null)
     {
-        $employees = User::where('type',2)->orderBy('id', 'desc')->get();
+
+        if($department_id == null) {
+            $employees = User::where('type', 2)->orderBy('id', 'desc')->get();
+        }
+        else
+        {
+            $employees = User::where('type', 2)->where('dept_id',$department_id)->orderBy('id', 'desc')->get();
+        }
 
         return view('employees.index',compact('employees'));
     }

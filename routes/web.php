@@ -38,14 +38,18 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['prefix' => 'admin','middleware' => ['auth','admin']],function() {
-    Route::resource('admins', 'Admin\AdminController', ['except' => ['show']]);
-    Route::resource('departments', 'Admin\DepartmentController', ['except' => ['show']]);
-    Route::resource('employees', 'Admin\EmployeeController', ['except' => ['show']]);
+
+    Route::get('/home', 'HomeController@index')->name('home');
+    Route::get('', 'HomeController@index')->name('home');
+    Route::resource('admins', 'Admin\AdminController');
+    Route::resource('departments', 'Admin\DepartmentController');
+    Route::resource('employees', 'Admin\EmployeeController');
+    Route::resource('questions', 'Admin\QuestionController');
 });
 
 Route::group(['prefix' => 'head','middleware' => ['auth','head']],function() {
 
-    Route::resource('categories', 'Admin\CategoryController', ['except' => ['show']]);
+    Route::resource('employees', 'Admin\EmployeeController', ['except' => ['store','create','delete']]);
 });
 
 Route::group(['prefix' => 'employee','middleware' => ['auth','employee','verified']],function() {
