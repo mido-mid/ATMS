@@ -104,9 +104,9 @@
                                             <div class="input-group">
                                                 <div class="custom-file">
 
-                                                    <img style="width:80px;height:80px;margin-right:10px;margin-top: 30px;" src="{{ asset('vendor_images') }}/{{$vendor->image}}" class="card-img-top" alt="Course Photo">
+                                                    <img style="width:80px;height:80px;margin-right:10px;margin-top: 30px;" src="{{ asset('images') }}/{{$admin->image}}" class="card-img-top" alt="Course Photo">
 
-                                                    <input type="checkbox" checked style="margin-right:10px;" name="checkedimage" value="{{$vendor->image}}">
+                                                    <input type="checkbox" checked style="margin-right:10px;" name="checkedimage" value="{{$admin->image}}">
 
                                                     <input name="image" type="file">
 
@@ -117,7 +117,7 @@
 
                                         <div class="form-group">
                                             <div class="form-group" style="margin-bottom: 10px">
-                                                <label for="exampleInputFile">{{__('admin.logo')}}</label>
+                                                <label for="exampleInputFile">{{__('image')}}</label>
 
                                                  <div class="form-group">
 

@@ -3,7 +3,7 @@
  * Jquery Mapael - Dynamic maps jQuery plugin (based on raphael.js)
  * Requires jQuery and Mapael
  *
- * Map of metropolitan France by department
+ * Map of metropolitan France by departments
  * Equirectangular projection
  *
  * @author Vincent Brouté

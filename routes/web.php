@@ -47,12 +47,12 @@ Route::group(['prefix' => 'admin','middleware' => ['auth','admin']],function() {
     Route::resource('questions', 'Admin\QuestionController');
 });
 
-Route::group(['prefix' => 'head','middleware' => ['auth','head']],function() {
+Route::group(['prefix' => 'heads','middleware' => ['auth','heads']],function() {
 
     Route::resource('employees', 'Admin\EmployeeController', ['except' => ['store','create','delete']]);
 });
 
-Route::group(['prefix' => 'employee','middleware' => ['auth','employee','verified']],function() {
+Route::group(['prefix' => 'employees','middleware' => ['auth','employees','verified']],function() {
 
     Route::resource('admins', 'Admin\AdminController', ['except' => ['show']]);
 });

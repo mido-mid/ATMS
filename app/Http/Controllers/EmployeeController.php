@@ -68,7 +68,7 @@ class EmployeeController extends Controller
 
         if($employee)
         {
-            return redirect('admin/employees')->withStatus('employee successfully created');
+            return redirect('admin/employees')->withStatus('employees successfully created');
         }
         else
         {
@@ -104,7 +104,7 @@ class EmployeeController extends Controller
         }
         else
         {
-            return redirect('admin/employees')->withStatus('no employee have this id');
+            return redirect('admin/employees')->withStatus('no employees have this id');
         }
     }
 
@@ -140,7 +140,7 @@ class EmployeeController extends Controller
                     'department_id' => $request->department_id
                 ]);
 
-                return redirect('/admin/employees')->withStatus('employee information successfully updated.');
+                return redirect('/admin/employees')->withStatus('employees information successfully updated.');
             }
             else
             {
@@ -173,11 +173,11 @@ class EmployeeController extends Controller
                     'department_id' => $request->department_id
 
                 ]);
-                return redirect('/admin/employees')->withStatus('employee information successfully updated.');
+                return redirect('/admin/employees')->withStatus('employees information successfully updated.');
             }
             else
             {
-                return redirect('admin/employees')->withStatus('no employee with this id');
+                return redirect('admin/employees')->withStatus('no employees with this id');
             }
         }
     }
@@ -196,7 +196,7 @@ class EmployeeController extends Controller
         if($employee)
         {
             $employee->delete();
-            return redirect('/admin/employees')->withStatus(__('employee successfully deleted.'));
+            return redirect('/admin/employees')->withStatus(__('employees successfully deleted.'));
         }
         return redirect('/admin/employees')->withStatus(__('this id is not in our database'));
     }

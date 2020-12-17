@@ -60,7 +60,7 @@ class HeadController extends Controller
 
         if($head)
         {
-            return redirect('admin/heads')->withStatus('head successfully created');
+            return redirect('admin/heads')->withStatus('heads successfully created');
         }
         else
         {

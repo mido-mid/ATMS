@@ -1769,7 +1769,7 @@ var _filename = function ( config )
 	}
 
 	if ( filename.indexOf( '*' ) !== -1 ) {
-		filename = $.trim( filename.replace( '*', $('head > title').text() ) );
+		filename = $.trim( filename.replace( '*', $('heads > title').text() ) );
 	}
 
 	// Strip characters which the OS will object to
@@ -1811,7 +1811,7 @@ var _title = function ( config )
 
 	return title === null ?
 		null : title.indexOf( '*' ) !== -1 ?
-			title.replace( '*', $('head > title').text() || 'Exported data' ) :
+			title.replace( '*', $('heads > title').text() || 'Exported data' ) :
 			title;
 };
 

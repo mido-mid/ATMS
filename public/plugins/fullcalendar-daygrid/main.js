@@ -565,14 +565,14 @@ Docs & License: https://fullcalendar.io/
                 '</div>');
             trEl = skeletonEl.getElementsByTagName('tr')[0];
             if (startCol > 0) {
-                core.appendToElement(trEl, 
+                core.appendToElement(trEl,
                 // will create (startCol + 1) td's
                 new Array(startCol + 1).join(EMPTY_CELL_HTML));
             }
             seg.el.colSpan = endCol - startCol;
             trEl.appendChild(seg.el);
             if (endCol < colCnt) {
-                core.appendToElement(trEl, 
+                core.appendToElement(trEl,
                 // will create (colCnt - endCol) td's
                 new Array(colCnt - endCol + 1).join(EMPTY_CELL_HTML));
             }
@@ -1401,9 +1401,9 @@ Docs & License: https://fullcalendar.io/
             return '' +
                 '<table class="' + theme.getClass('tableGrid') + '">' +
                 (options.columnHeader ?
-                    '<thead class="fc-head">' +
+                    '<thead class="fc-heads">' +
                         '<tr>' +
-                        '<td class="fc-head-container ' + theme.getClass('widgetHeader') + '">&nbsp;</td>' +
+                        '<td class="fc-heads-container ' + theme.getClass('widgetHeader') + '">&nbsp;</td>' +
                         '</tr>' +
                         '</thead>' :
                     '') +
@@ -1615,7 +1615,7 @@ Docs & License: https://fullcalendar.io/
         DayGridView.prototype._renderSkeleton = function (context) {
             _super.prototype._renderSkeleton.call(this, context);
             if (context.options.columnHeader) {
-                this.header = new core.DayHeader(this.el.querySelector('.fc-head-container'));
+                this.header = new core.DayHeader(this.el.querySelector('.fc-heads-container'));
             }
             this.simpleDayGrid = new SimpleDayGrid(this.dayGrid);
         };

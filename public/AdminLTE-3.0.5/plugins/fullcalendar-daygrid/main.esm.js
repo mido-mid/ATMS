@@ -1397,9 +1397,9 @@ var AbstractDayGridView = /** @class */ (function (_super) {
         return '' +
             '<table class="' + theme.getClass('tableGrid') + '">' +
             (options.columnHeader ?
-                '<thead class="fc-head">' +
+                '<thead class="fc-heads">' +
                     '<tr>' +
-                    '<td class="fc-head-container ' + theme.getClass('widgetHeader') + '">&nbsp;</td>' +
+                    '<td class="fc-heads-container ' + theme.getClass('widgetHeader') + '">&nbsp;</td>' +
                     '</tr>' +
                     '</thead>' :
                 '') +
@@ -1611,7 +1611,7 @@ var DayGridView = /** @class */ (function (_super) {
     DayGridView.prototype._renderSkeleton = function (context) {
         _super.prototype._renderSkeleton.call(this, context);
         if (context.options.columnHeader) {
-            this.header = new DayHeader(this.el.querySelector('.fc-head-container'));
+            this.header = new DayHeader(this.el.querySelector('.fc-heads-container'));
         }
         this.simpleDayGrid = new SimpleDayGrid(this.dayGrid);
     };

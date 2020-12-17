@@ -152,368 +152,62 @@ $settings = App\Models\Setting::all()->first();
                     <!-- Add icons to the links using the .nav-icon class
                          with font-awesome or any other icon font library -->
 
-
-                    @if(auth()->user()->hasAnyPermission(['admin-list','supermarketAdmin-list','client-list','point-list','branches-list', 'role-list','reason-list', 'logs-list']))
-
-                        <li class="nav-item has-treeview">
-
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>
-                                    {{ __('admin.admin_managment') }}
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-
-
-                            <ul class="nav nav-treeview">
-
-                                {{-- admin --}}
-                                @if(auth()->user()->can('admin-list'))
-                                    <li class="nav-item">
-                                        <a href="{{route('admins.index')}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{__('admin.admin')}}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @endif
-                                {{-- supermarketAdmin --}}
-                                @if(auth()->user()->can('supermarketAdmin-list'))
-                                    {{-- supermarket-admin --}}
-                                    <li class="nav-item">
-                                        <a href="{{route('supermarket-admins.index')}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{ __('admin.supermarket_admin') }}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @endif
-
-                                {{-- delivery-admin --}}
-                                @if(auth()->user()->can('delivery-list'))
-                                    <li class="nav-item">
-                                        <a href="{{route('delivery-admins.index')}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{__('admin.delivery_management')}}
-                                            </p>
-                                        </a>
-                                    </li>
-
-
-                                    <li class="nav-item">
-                                        <a href="{{route('delivery-companies.index')}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{__('admin.delivery_company')}}
-                                            </p>
-                                        </a>
-                                    </li>
-
-
-                                @endif
-
-                                {{-- client --}}
-                                @if(auth()->user()->can('client-list'))
-                                    {{-- client --}}
-                                    <li class="nav-item">
-                                        <a href="{{route('clients.index')}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{ __('admin.client') }}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @endif
-                                {{-- role --}}
-                                @if(auth()->user()->can('role-list'))
-                                    <li class="nav-item">
-                                        <a href="{{route('roles.index')}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{ __('admin.roles') }}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @endif
-
-                                {{-- point --}}
-                                @if(auth()->user()->can('point-list'))
-                                    <li class="nav-item">
-                                        <a href="{{route('points.index')}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{ __('admin.points') }}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @endif
-
-                                {{-- reason --}}
-                                @if(auth()->user()->can('reason-list'))
-                                    <li class="nav-item">
-                                        <a href="{{route('reasons.index')}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{ __('admin.reasons') }}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @endif
-
-                                {{-- logs --}}
-                                @if(auth()->user()->can('logs-list'))
-                                    <li class="nav-item">
-                                        <a href="{{route('logs.index')}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{ __('admin.logs') }}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @endif
-
-                            </ul>
-                        </li>
-                    @endif
-                    {{-- location --}}
-                    @if(auth()->user()->can('location-list'))
-                        {{-- location --}}
-                        <li class="nav-item has-treeview">
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>
-                                    {{ __('admin.location_managment') }}
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-
-                                <li class="nav-item">
-                                    <a href="{{route('countries.index')}}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>{{ __('admin.country') }}</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{route('cities.index')}}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>{{ __('admin.city') }}</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="{{route('areas.index')}}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>{{ __('admin.area') }}</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-                    {{-- category --}}
-                    @if(auth()->user()->can('category-list'))
-
-                        <li class="nav-item has-treeview">
-
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>
-                                    {{ __('admin.category_managment') }}
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-
-
-
-                            <ul class="nav nav-treeview">
-
-                                {{-- main category --}}
-                                <li class="nav-item">
-                                    <a href="{{route('categories.index')}}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>
-                                            {{ __('admin.category') }}
-                                        </p>
-                                    </a>
-                                </li>
-
-                                {{-- sub category --}}
-                                {{--  <li class="nav-item">
-                                     <a href="{{route('subcategories.index')}}" class="nav-link">
-                                         <i class="far fa-circle nav-icon"></i>
-                                         <p>
-                                              {{ __('admin.subcategory') }}
-                                         </p>
-                                     </a>
-                                 </li> --}}
-
-
-                                {{-- measures --}}
-                                <li class="nav-item">
-                                    <a href="{{route('measures.index')}}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>{{ __('admin.measure') }}</p>
-                                    </a>
-                                </li>
-
-                                {{-- sizes --}}
-                                <li class="nav-item">
-                                    <a href="{{route('sizes.index')}}" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>{{ __('admin.size') }}</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-                    @endif
-
-                    @if(auth()->user()->hasAnyPermission(['supermarket-list','branches-list','vendor-list','product-list','offer-list']))
-                        {{-- supermarket --}}
-                        <li class="nav-item has-treeview">
-
-
-                            <a href="" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>
-                                    {{ __('admin.supermarket_management') }}
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-
-
-
-                            <ul class="nav nav-treeview">
-                                @if(auth()->user()->can('supermarket-list'))
-                                    <li class="nav-item">
-                                        <a href="{{route('supermarkets.index')}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{ __('admin.all_supermarkets') }}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @endif
-
-                                @if(auth()->user()->can('branches-list'))
-                                    <li class="nav-item">
-                                        <a href="{{route('branches.index')}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>{{ __('admin.branches') }}</p>
-                                        </a>
-                                    </li>
-                                @endif
-
-                                @if(auth()->user()->can('vendor-list'))
-                                    {{-- Vendors --}}
-                                    <li class="nav-item">
-                                        <a href="{{route('vendors.index')}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{ __('admin.vendor') }}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @endif
-                                @if(auth()->user()->can('product-list'))
-                                    <li class="nav-item">
-                                        <a href="{{route('products.index',0)}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>{{ __('admin.list_product') }}</p>
-                                        </a>
-                                    </li>
-
-                                    <li class="nav-item">
-                                        <a href="{{route('products.index',1)}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{ __('admin.product_offers') }}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @endif
-
-                                @if(auth()->user()->can('offer-list'))
-                                    {{-- offer --}}
-                                    <li class="nav-item">
-                                        <a href="{{route('offers.index')}}" class="nav-link">
-                                            <i class="far fa-circle nav-icon"></i>
-                                            <p>
-                                                {{ __('admin.offers') }}
-                                            </p>
-                                        </a>
-                                    </li>
-                                @endif
-
-
-                            </ul>
-                        </li>
-                    @endif
-
-                    {{-- delivery --}}
-                    @if(auth()->user()->can('delivery-list'))
-                        {{-- delivery --}}
+                    @if(auth()->user()->type == 0 )
+                        {{-- client --}}
                         <li class="nav-item">
-                            <a href="{{route('delivery.index')}}" class="nav-link">
-                                <i class="nav-icon fas fa-chart-pie"></i>
-                                <p>{{ __('admin.delivery') }}</p>
-                            </a>
-                        </li>
-                    @endif
-
-                    {{-- Orders --}}
-                    @if(auth()->user()->can('order-list'))
-                        <li class="nav-item">
-                            <a href="{{route('orders.index')}}" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <a href="{{route('admins.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
                                 <p>
-                                    {{ __('admin.orders') }}
+                                    {{ __('admins') }}
                                 </p>
                             </a>
                         </li>
                     @endif
 
-                    {{-- setting --}}
-                    @if(auth()->user()->can('setting-list'))
+                    @if(auth()->user()->type == 0)
                         <li class="nav-item">
-                            <a href="{{route('settings.edit',$settings->id??"")}}" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <a href="{{route('departments.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
                                 <p>
-                                    {{ __('admin.setting') }}
+                                    {{ __('departments') }}
                                 </p>
                             </a>
                         </li>
                     @endif
 
-
-
-
-                    {{--                    <li class="nav-item">
-                                        <a href="{{route('notifications.index')}}" class="nav-link">
-                                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                                            <p>
-                                                Notifications
-                                            </p>
-                                        </a>
-                                    </li>--}}
-
-
-
-                    @if(auth()->user()->hasRole('developer'))
-
-
+                    @if(auth()->user()->type == 0)
                         <li class="nav-item">
-                            <a href="{{route('permissions.index')}}" class="nav-link">
-                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <a href="{{route('heads.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
                                 <p>
-                                    Permissions
+                                    {{ __('heads of departments') }}
                                 </p>
                             </a>
                         </li>
-
                     @endif
+
+                    @if(auth()->user()->type == 1 || auth()->user()->type == 1)
+                        <li class="nav-item">
+                            <a href="{{route('employees.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    {{ __('employees') }}
+                                </p>
+                            </a>
+                        </li>
+                    @endif
+
+                    @if(auth()->user()->type == 1)
+                        <li class="nav-item">
+                            <a href="{{route('questions.index')}}" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>
+                                    {{ __('questions') }}
+                                </p>
+                            </a>
+                        </li>
+                    @endif
+
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->

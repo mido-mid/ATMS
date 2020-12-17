@@ -37632,7 +37632,7 @@ var fpgm = new r.Struct({
   instructions: new r.Array(r.uint8)
 });
 
-var loca = new r.VersionedStruct('head.indexToLocFormat', {
+var loca = new r.VersionedStruct('heads.indexToLocFormat', {
   0: {
     offsets: new r.Array(r.uint16)
   },

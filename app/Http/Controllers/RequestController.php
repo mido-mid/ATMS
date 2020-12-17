@@ -51,7 +51,7 @@ class RequestController extends Controller
                 'employee_id' => $employee_id
             ]);
 
-            return redirect('admin/employees')->withStatus('employee successfully checked in');
+            return redirect('admin/employees')->withStatus('employees successfully checked in');
         }
         else
         {
@@ -94,7 +94,7 @@ class RequestController extends Controller
 
             event(new employeenotifications($data));
 
-            return redirect('admin/employees')->withStatus('employee successfully checked out');
+            return redirect('admin/employees')->withStatus('employees successfully checked out');
         }
         else
         {
