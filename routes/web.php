@@ -56,7 +56,7 @@ Route::group(['prefix' => 'dashboard','middleware' => ['auth']],function() {
 
     Route::post('check_in/{employee_id}', 'RequestController@check_in')->name('check_in');
     Route::put('check_out/{request_id}', 'RequestController@check_out')->name('check_out');
-    Route::get('requests/{department_id?}', 'RequestController@index')->name('requests.index');
+    Route::get('requests/{request_id?}', 'RequestController@index')->name('requests.index');
     Route::get('employee_requests/{employee_id}', 'EmployeeController@employee_requests')->name('employee.requests');
 
 

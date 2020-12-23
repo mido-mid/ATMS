@@ -181,23 +181,23 @@ $requests_count = auth()->user()->requests()->where('check_in','!=',null)->where
                                     <tbody>
                                     @foreach($today_requests as $request)
                                         <tr>
-                                            <td>{{ $request->user()->name }}</td>
-                                            <td>{{ $request->user()->email }}</td>
-                                            <td>{{ $request->user()->department()->name }}</td>
+                                            <td>{{ $request->employee->name }}</td>
+                                            <td>{{ $request->employee->email }}</td>
+                                            <td>{{$request->employee->department->name}}</td>
                                             <td>
                                                 <div class="dropdown">
                                                     <button type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="drop-down-button">
                                                         <i class="fas fa-ellipsis-v"></i>
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                                        <form action="{{ route('employees.destroy', $request->user()->id) }}" method="post">
+                                                        <form action="{{ route('employees.destroy', $request->employee->id) }}" method="post">
                                                             @csrf
                                                             @method('delete')
 
                                                             <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this vendor?") }}') ? this.parentElement.submit() : ''">{{ __('delete') }}</button>
 
                                                         </form>
-                                                        <a class="dropdown-item" href="{{ route('employees.edit', $request->user()->id) }}">{{ __('edit') }}</a>
+                                                        <a class="dropdown-item" href="{{ route('employees.edit', $request->employee->id) }}">{{ __('edit') }}</a>
                                                     </div>
                                                 </div>
                                             </td>
@@ -218,35 +218,17 @@ $requests_count = auth()->user()->requests()->where('check_in','!=',null)->where
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
+                                        <th>{{ __('employee check_in') }}</th>
                                         <th>{{ __('employee name') }}</th>
                                         <th>{{ __('employee email') }}</th>
-                                        <th>{{ __('employee department') }}</th>
-                                        <th>{{ __('controls') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($available_dept_employees as $employee)
+                                    @foreach($available_dept_employees as $request)
                                         <tr>
-                                            <td>{{ $employee->name }}</td>
-                                            <td>{{ $employee->email }}</td>
-                                            <td>{{ $employee->department->name }}</td>
-                                            <td>
-                                                <div class="dropdown">
-                                                    <button type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="drop-down-button">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                                        <form action="{{ route('employees.destroy', $employee->id) }}" method="post">
-                                                            @csrf
-                                                            @method('delete')
-
-                                                            <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this vendor?") }}') ? this.parentElement.submit() : ''">{{ __('delete') }}</button>
-
-                                                        </form>
-                                                        <a class="dropdown-item" href="{{ route('employees.edit', $employee->id) }}">{{ __('edit') }}</a>
-                                                    </div>
-                                                </div>
-                                            </td>
+                                            <td>{{ $request->check_in }}</td>
+                                            <td>{{ $request->employee->name }}</td>
+                                            <td>{{ $request->employee->email }}</td>
                                     @endforeach
 
                                     </tbody>

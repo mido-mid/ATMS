@@ -65,7 +65,7 @@
 
                                     <div class="form-group">
                                         <label for="exampleInputEmail1"> {{ __('email') }}</label>
-                                        <input type="email" value="@if(isset($employee)){{$employee->email }} @endif" name="email" class="@error('email') is-invalid @enderror form-control" id="exampleInputEmail1" placeholder="Enter email" required>
+                                        <input type="email" value="@if(isset($head)){{$head->email }} @endif" name="email" class="@error('email') is-invalid @enderror form-control" id="exampleInputEmail1" placeholder="Enter email" required>
                                         @error('email')
                                         <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>

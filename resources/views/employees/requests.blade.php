@@ -11,17 +11,23 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ __('Employee requests') }}</h1>
+                        <h1>{{$employee->name}} {{ __('requests') }}</h1>
                     </div>
 
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <form action="{{ route('check_in', auth()->user()->id) }}" method="post">
-                                @csrf
 
-                                <li class="breadcrumb-item"><button class="btn btn-block btn-primary"  onclick="confirm('{{ __("Are you sure you want to check in ?") }}') ? this.parentElement.submit() : ''"><i class="far fa-check-circle"></i> {{ __('check in') }}</button></li>
+                            @if(\App\Models\EmployeeRequest::whereRaw('date(created_at) = curdate()')->where('employee_id',"=",auth()->user()->id)->get()->count() == 0 && auth()->user()->type == 2)
+                                <form action="{{ route('check_in', auth()->user()->id) }}" method="POST">
 
-                            </form>
+                                    @csrf
+
+                                    <button type="button" class="btn btn-block btn-primary" onclick="confirm('{{ __("Are you sure you want to check in?") }}') ? this.parentElement.submit() : ''"><i class="far fa-check-circle"></i> {{ __('check in') }}</button></li>
+
+                                </form>
+
+                            @endif
+
                         </ol>
                     </div>
 
@@ -48,7 +54,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">{{ __('employees') }}</h3>
+                                <h3 class="card-title">{{ __('requests') }}</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -65,18 +71,28 @@
                                         <tr>
                                             <td>{{$request->check_in}}</td>
                                             <td>
+
                                                 @if($request->check_out != null)
 
                                                     {{$request->check_out}}
 
                                                 @else
 
-                                                    <form action="{{ route('check_out', $request->id) }}" method="post">
-                                                        @csrf
+                                                    @if(auth()->user()->type == 2)
 
-                                                        <button class="btn btn-block btn-primary"  onclick="confirm('{{ __("Are you sure you want to check out ?") }}') ? this.parentElement.submit() : ''"><i class="far fa-check-circle"></i> {{ __('check out') }}</button></li>
+                                                        <form action="{{ route('check_out',$request->id) }}" method="post">
+                                                            @csrf
+                                                            @method('put')
 
-                                                    </form>
+                                                            <button type="button" class="btn btn-block btn-danger" onclick="confirm('{{ __("Are you sure you want to check out ?") }}') ? this.parentElement.submit() : ''"><i class="far fa-check-circle"></i> {{ __('check out') }}</button></li>
+
+                                                        </form>
+
+                                                    @else
+
+                                                        did not check out
+
+                                                    @endif
 
 
                                                 @endif

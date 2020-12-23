@@ -52,7 +52,7 @@
                                     <tr>
                                         <th>{{ __('name') }}</th>
                                         <th>{{ __('email') }}</th>
-                                        <th>{{ __('absence days') }}</th>
+                                        <th>{{ __('absence days this month') }}</th>
                                         <th>{{ __('status') }}</th>
                                         <th>{{__('controls')}}</th>
                                     </tr>
@@ -60,11 +60,11 @@
                                     <tbody>
                                     @foreach($employees as $employee)
                                         <tr>
-                                            <td>{{$employee->name}}</td>
+                                            <td><a href="{{route('requests.index',$employee->id)}}">{{$employee->name}}</a></td>
                                             <td>{{$employee->email}}</td>
                                             <td>
                                                 {{
-                                                     date('t') - $employee->requests()->where('check_in','!=',null)->where('check_out','!=',null)->
+                                                     date('d') - $employee->requests()->where('check_in','!=',null)->where('check_out','!=',null)->
                                                     whereMonth('created_at','=',date('m'))->get()->count()
 
                                                 }}
@@ -72,7 +72,7 @@
                                             </td>
                                             <td>
 
-                                                @if($employee->requests()->where('created_at','=',today())->where('check_out',null)->first())
+                                                @if($employee->requests()->whereRaw('date(created_at) = curdate()')->where('check_out',null)->first())
 
                                                     available
 
@@ -93,7 +93,7 @@
                                                             @csrf
                                                             @method('delete')
 
-                                                            <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this vendor?") }}') ? this.parentElement.submit() : ''">{{ __('delete') }}</button>
+                                                            <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this employee?") }}') ? this.parentElement.submit() : ''">{{ __('delete') }}</button>
 
                                                         </form>
                                                         <a class="dropdown-item" href="{{ route('employees.edit', $employee->id) }}">{{ __('edit') }}</a>

@@ -55,7 +55,7 @@
 
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">{{__('description')}}</label>
-                                        <input type="text" value="@if(isset($vendor)){{$question->description }} @endif" name="description" class=" @error('description') is-invalid @enderror form-control" required>
+                                        <input type="text" value="@if(isset($question)){{$question->description }} @endif" name="description" class=" @error('description') is-invalid @enderror form-control" required>
                                         @error('description')
                                         <span class="invalid-feedback" role="alert">
                                             <strong>{{ $message }}</strong>

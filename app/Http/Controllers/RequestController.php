@@ -14,22 +14,28 @@ use App\Events\headnotifications;
 class RequestController extends Controller
 {
     //
-    public function index($department_id = null)
+    public function index($employee_id = null)
     {
 
-        if($department_id == null) {
-            $requests = EmployeeRequest::all();
+        if ($employee_id != null )
+        {
+
+            $employee = User::find($employee_id);
+
+            $requests = $employee->requests;
+
+            return view('employees.requests',compact('requests','employee'));
+
         }
         else
         {
-            $department = Department::find($department_id);
+            $requests = EmployeeRequest::all();
 
-            $department_employees = $department->employees()->select('id')->get();
+            $employee = auth()->user();
 
-            $requests = EmployeeRequest::whereIn('employee_id',$department_employees)->get();
+            return view('employees.requests',compact('requests','employee'));
         }
 
-        return view('employees.requests',compact('requests'));
     }
 
     public function check_in(Request $request, $employee_id)
@@ -45,7 +51,7 @@ class RequestController extends Controller
             'employee_id' => auth()->user()->id
         ]);
 
-        return redirect('dashboard/requests')->withStatus('employees successfully checked in');
+        return redirect('dashboard/requests/'.auth()->user()->id)->withStatus('employees successfully checked in');
 
     }
 
@@ -61,20 +67,9 @@ class RequestController extends Controller
             'status' => 'approved'
         ]);
 
+        return redirect('dashboard/requests/'.auth()->user()->id)->withStatus('employees successfully checked out');
+
     }
 
-    public function request_status(Request $request , $request_id)
-    {
-
-        $request = EmployeeRequest::find($request_id);
-
-        if($request)
-        {
-            $request->update([
-                'status' => $request->status
-            ]);
-            return redirect('dashboard/employees')->withStatus('request status successfully updated');
-        }
-    }
 
 }

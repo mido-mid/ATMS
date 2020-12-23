@@ -78,7 +78,7 @@
                                                             @csrf
                                                             @method('delete')
 
-                                                            <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this vendor?") }}') ? this.parentElement.submit() : ''">{{ __('delete') }}</button>
+                                                            <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this question?") }}') ? this.parentElement.submit() : ''">{{ __('delete') }}</button>
 
                                                         </form>
                                                         <a class="dropdown-item" href="{{ route('questions.edit', $question->id) }}">{{ __('edit') }}</a>

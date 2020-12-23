@@ -286,7 +286,7 @@
                     @endif
                     @if(auth()->user()->type == 2)
                         <li class="nav-item">
-                            <a href="{{route('requests.index')}}" class="nav-link">
+                            <a href="{{route('requests.index',auth()->user()->id)}}" class="nav-link">
                                 <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
                                     {{ __('my requests') }}
