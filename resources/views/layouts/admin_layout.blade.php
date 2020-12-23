@@ -1,10 +1,4 @@
-
-<?php
-$settings = App\Models\Setting::all()->first();
-
-?>
-
-    <!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -12,7 +6,7 @@ $settings = App\Models\Setting::all()->first();
     <!-- Tell the browser to be responsive to screen width -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Deliveritto | Dashboard</title>
+    <title>ATMS | Dashboard</title>
 
     <!-- Tempusdominus Bbootstrap 4 -->
     <link rel="stylesheet" href="{{ asset('plugins') }}/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
@@ -84,18 +78,39 @@ $settings = App\Models\Setting::all()->first();
                 <a href="{{route('home')}}" class="nav-link">{{__('dashboard')}}</a>
             </li>
 
-            @foreach(LaravelLocalization::getSupportedLocales() as $localeCode => $properties)
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a class="nav-link"
-                       href="{{ LaravelLocalization::getLocalizedURL($localeCode, null, [], true) }}"> {{ $properties['native'] }}
-                        <span class="sr-only">(current)</span></a>
-                </li>
-            @endforeach
-
         </ul>
 
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
+
+
+            <!-- Notifications Dropdown Menu -->
+            <li class="nav-item dropdown">
+                <a class="nav-link" data-toggle="dropdown" href="#">
+                    <i class="far fa-bell"></i>
+                    <span class="badge badge-warning navbar-badge">15</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                    <span class="dropdown-item dropdown-header">15 Notifications</span>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-envelope mr-2"></i> 4 new messages
+                        <span class="float-right text-muted text-sm">3 mins</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-users mr-2"></i> 8 friend requests
+                        <span class="float-right text-muted text-sm">12 hours</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item">
+                        <i class="fas fa-file mr-2"></i> 3 new reports
+                        <span class="float-right text-muted text-sm">2 days</span>
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
+                </div>
+            </li>
             <!-- Messages Dropdown Menu -->
 
             <li class="nav-item dropdown">
@@ -104,11 +119,9 @@ $settings = App\Models\Setting::all()->first();
                 </a>
 
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                    @can('admin-edit')
-                        <a class="dropdown-item" href="{{ route('profile.edit') }}">
-                            {{ __('Profile') }}
-                        </a>
-                    @endcan
+                    <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                        {{ __('Profile') }}
+                    </a>
 
                     <a class="dropdown-item" href="{{ route('logout') }}"
                        onclick="event.preventDefault();
@@ -129,9 +142,9 @@ $settings = App\Models\Setting::all()->first();
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
         <!-- Brand Logo -->
         <a href="{{route('home')}}" class="brand-link">
-            <img src="{{ asset('logo.jpeg') }}" alt="Food code Logo" class="brand-image img-circle elevation-3"
+            <img src="{{ asset('images/ATMS.svg') }}" alt="atms Logo" class="brand-image elevation-3"
                  style="opacity: .8">
-            <span class="brand-text font-weight-light">Delivertto</span>
+            <span class="brand-text font-weight-light" style="visibility: hidden">.</span>
         </a>
 
         <!-- Sidebar -->
@@ -142,7 +155,7 @@ $settings = App\Models\Setting::all()->first();
                     <img src="{{ asset('dist') }}/img/avatar5.png" class="img-circle elevation-2" alt="User Image">
                 </div>
                 <div class="info">
-                    <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+                    <a href="#" class="d-block">{{ \Str::limit(Auth::user()->name,15) }}</a>
                 </div>
             </div>
 
@@ -156,7 +169,7 @@ $settings = App\Models\Setting::all()->first();
                         {{-- client --}}
                         <li class="nav-item">
                             <a href="{{route('admins.index')}}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                                <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
                                     {{ __('admins') }}
                                 </p>
@@ -167,7 +180,7 @@ $settings = App\Models\Setting::all()->first();
                     @if(auth()->user()->type == 0)
                         <li class="nav-item">
                             <a href="{{route('departments.index')}}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                                <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
                                     {{ __('departments') }}
                                 </p>
@@ -178,7 +191,7 @@ $settings = App\Models\Setting::all()->first();
                     @if(auth()->user()->type == 0)
                         <li class="nav-item">
                             <a href="{{route('heads.index')}}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                                <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
                                     {{ __('heads of departments') }}
                                 </p>
@@ -186,23 +199,44 @@ $settings = App\Models\Setting::all()->first();
                         </li>
                     @endif
 
-                    @if(auth()->user()->type == 1 || auth()->user()->type == 1)
+                    @if(auth()->user()->type == 0 || auth()->user()->type == 1)
                         <li class="nav-item">
-                            <a href="{{route('employees.index')}}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+
+                            @if(auth()->user()->type == 0)
+                                <a href="{{route('employees.index')}}" class="nav-link">
+                                    <i class="nav-icon fas fa-chart-pie"></i>
+                                    <p>
+                                        {{ __('employees') }}
+                                    </p>
+                                </a>
+                            @else
+                                <a href="{{route('employee.index',auth()->user()->department->id)}}" class="nav-link">
+                                    <i class="nav-icon fas fa-chart-pie"></i>
+                                    <p>
+                                        {{ __('employees') }}
+                                    </p>
+                                </a>
+                            @endif
+                        </li>
+                    @endif
+
+                    @if(auth()->user()->type == 0)
+                        <li class="nav-item">
+                            <a href="{{route('questions.index')}}" class="nav-link">
+                                <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
-                                    {{ __('employees') }}
+                                    {{ __('questions') }}
                                 </p>
                             </a>
                         </li>
                     @endif
 
-                    @if(auth()->user()->type == 1)
+                    @if(auth()->user()->type == 2)
                         <li class="nav-item">
-                            <a href="{{route('questions.index')}}" class="nav-link">
-                                <i class="far fa-circle nav-icon"></i>
+                            <a href="{{route('requests.index')}}" class="nav-link">
+                                <i class="nav-icon fas fa-chart-pie"></i>
                                 <p>
-                                    {{ __('questions') }}
+                                    {{ __('my requests') }}
                                 </p>
                             </a>
                         </li>
@@ -225,7 +259,7 @@ $settings = App\Models\Setting::all()->first();
     <div class="float-right d-none d-sm-block">
         <b>Version</b> 1.0.0
     </div>
-    <strong>Copyright &copy; 2020-2021 <a href="http://adminlte.io">Eramint..com</a>.</strong> All rights
+    <strong>Copyright &copy; 2020-2021 <a href="#">ATMS.com</a>.</strong> All rights
     reserved.
 </footer>
 

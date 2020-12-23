@@ -11,14 +11,20 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>{{ __('Heads') }}</h1>
+                        <h1>{{ __('Employee requests') }}</h1>
                     </div>
 
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{route('heads.create')}}">{{ __('add new head') }}</a></li>
+                            <form action="{{ route('check_in', auth()->user()->id) }}" method="post">
+                                @csrf
+
+                                <li class="breadcrumb-item"><button class="btn btn-block btn-primary"  onclick="confirm('{{ __("Are you sure you want to check in ?") }}') ? this.parentElement.submit() : ''"><i class="far fa-check-circle"></i> {{ __('check in') }}</button></li>
+
+                            </form>
                         </ol>
                     </div>
+
 
                     <div class="col-12">
 
@@ -42,42 +48,41 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">{{ __('Heads of departments') }}</h3>
+                                <h3 class="card-title">{{ __('employees') }}</h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
                                 <table id="example1" class="table table-bordered table-striped">
                                     <thead>
                                     <tr>
-                                        <th>{{ __('name') }}</th>
-                                        <th>{{ __('email') }}</th>
-                                        <th>{{ __('department') }}</th>
-                                        <th>{{__('admins.controls')}}</th>
+                                        <th>{{ __('check_in') }}</th>
+                                        <th>{{ __('check_out') }}</th>
+                                        <th>{{ __('status') }}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    @foreach($heads as $head)
+                                    @foreach($requests as $request)
                                         <tr>
-                                            <td>{{$head->name}}</td>
-                                            <td>{{$head->email}}</td>
-                                            <td>{{$head->department->name}}</td>
+                                            <td>{{$request->check_in}}</td>
                                             <td>
-                                                <div class="dropdown">
-                                                    <button type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="drop-down-button">
-                                                        <i class="fas fa-ellipsis-v"></i>
-                                                    </button>
-                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                                        <form action="{{ route('heads.destroy', $head->id) }}" method="post">
-                                                            @csrf
-                                                            @method('delete')
+                                                @if($request->check_out != null)
 
-                                                            <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this vendor?") }}') ? this.parentElement.submit() : ''">{{ __('delete') }}</button>
+                                                    {{$request->check_out}}
 
-                                                        </form>
-                                                        <a class="dropdown-item" href="{{ route('heads.edit', $head->id) }}">{{ __('edit') }}</a>
-                                                    </div>
-                                                </div>
+                                                @else
+
+                                                    <form action="{{ route('check_out', $request->id) }}" method="post">
+                                                        @csrf
+
+                                                        <button class="btn btn-block btn-primary"  onclick="confirm('{{ __("Are you sure you want to check out ?") }}') ? this.parentElement.submit() : ''"><i class="far fa-check-circle"></i> {{ __('check out') }}</button></li>
+
+                                                    </form>
+
+
+                                                @endif
+
                                             </td>
+                                            <td>{{$request->status}}</td>
                                         </tr>
                                     @endforeach
 

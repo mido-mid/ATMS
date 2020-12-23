@@ -29,7 +29,7 @@ class RequestController extends Controller
             $requests = EmployeeRequest::whereIn('employee_id',$department_employees)->get();
         }
 
-        return view('requests.index',compact('requests'));
+        return view('employees.requests',compact('requests'));
     }
 
     public function check_in(Request $request, $employee_id)
@@ -37,26 +37,16 @@ class RequestController extends Controller
 
         date_default_timezone_set("Africa/Cairo");
 
-        $employee_department = User::where('id',$request->employee_id)->first()->department;
 
-        $start_time = $employee_department->start_time;
+        EmployeeRequest::create([
 
-        if(strtotime($start_time) >= now() )
-        {
+            'check_in' => now(),
+            'status' => 'pending',
+            'employee_id' => auth()->user()->id
+        ]);
 
-            EmployeeRequest::create([
+        return redirect('dashboard/requests')->withStatus('employees successfully checked in');
 
-                'check_in' => now(),
-                'status' => 'pending',
-                'employee_id' => $employee_id
-            ]);
-
-            return redirect('admin/employees')->withStatus('employees successfully checked in');
-        }
-        else
-        {
-            return redirect('admin/employees')->withStatus('something went wrong, try again');
-        }
     }
 
     public function check_out(Request $request , $request_id)
@@ -66,64 +56,11 @@ class RequestController extends Controller
 
         $employee_request = EmployeeRequest::find($request_id);
 
-        $employee_department = User::where('id',$employee_request->employee_id)->first()->department;
+        $employee_request->update([
+            'check_out' => now(),
+            'status' => 'approved'
+        ]);
 
-        $end_time = $employee_department->end_time;
-
-
-        if($request && strtotime($end_time) <= now())
-        {
-            $employee_request->update([
-                'check_out' => now(),
-                'status' => 'approved'
-            ]);
-
-            $data = [
-
-                'request_id' => $request_id,
-                'employee_department' => $employee_department->id,
-                'employee_name' => $employee_request->user->name,
-                'checkout_time' => $employee_request->check_out,
-                'status' => $employee_request->status,
-            ];
-
-
-            event(new adminnotifications($data));
-
-            event(new headnotifications($data));
-
-            event(new employeenotifications($data));
-
-            return redirect('admin/employees')->withStatus('employees successfully checked out');
-        }
-        else
-        {
-
-            $employee_request->update([
-                'check_out' => now(),
-                'status' => 'pending',
-                'reason' => $request->reason
-            ]);
-
-            $data = [
-
-                'request_id' => $request_id,
-                'employee_department' => $employee_department->id,
-                'employee_name' => $employee_request->user->name,
-                'checkout_time' => $employee_request->check_out,
-                'status' => $employee_request->status,
-            ];
-
-
-            event(new adminnotifications($data));
-
-            event(new headnotifications($data));
-
-            event(new employeenotifications($data));
-
-
-            return redirect('admin/employees')->withStatus('something went wrong, try again');
-        }
     }
 
     public function request_status(Request $request , $request_id)
@@ -136,7 +73,7 @@ class RequestController extends Controller
             $request->update([
                 'status' => $request->status
             ]);
-            return redirect('admin/employees')->withStatus('request status successfully updated');
+            return redirect('dashboard/employees')->withStatus('request status successfully updated');
         }
     }
 

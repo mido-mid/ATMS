@@ -169,8 +169,11 @@
                 <div class="col-5 text-white landingleft">
                     <h3>Attendance Monitoring Made Easy</h3>
                     <h6>Manage your Working hours easily and efficiently</h6>
-                    <button id="login" class="landing-button" data-toggle="modal" data-target="#LoginModal">Login</button>
-                    <button id="signup" class="landing-button" data-toggle="modal" data-target="#SignUpModal">SignUp</button>
+{{--                    <button id="login" class="landing-button" data-toggle="modal" data-target="#LoginModal">Login</button>--}}
+{{--                    <button id="signup" class="landing-button" data-toggle="modal" data-target="#SignUpModal">SignUp</button>--}}
+
+                    <button id="login" class="landing-button"><a id="login" href="{{ route('login') }}">Login</a></button>
+                    <button id="signup" class="landing-button"><a id="signup" href="{{ route('register') }}" >sign up</a></button>
                 </div>
                 <img class="col-7" src="images/Ilustration 1.svg">
             </div>

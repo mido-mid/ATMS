@@ -8,7 +8,9 @@
                 <div class="card-header">{{ __('Register') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+
+                    @include('includes.errors')
+                    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                         @csrf
 
                         <div class="form-group row">
@@ -58,6 +60,20 @@
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+                            </div>
+                        </div>
+
+                        <div class="form-group row">
+
+                            <label for="cars" class="col-md-4 col-form-label text-md-right">Choose a car:</label>
+                            <div class="col-md-6">
+                                <select name="department_id" id="cars">
+                                    @foreach(\App\Models\Department::all() as $department)
+
+                                        <option value="{{ $department->id }}">{{ $department->name }}</option>
+
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
 

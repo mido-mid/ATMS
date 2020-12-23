@@ -43,26 +43,24 @@ class DepartmentController extends Controller
         //
         $rules = [
             'name' => ['required','min:2','max:60','not_regex:/([%\$#\*<>]+)/'],
-            'heads' => 'required|integer|min:0',
         ];
 
         $this->validate($request,$rules);
 
-        $head = User::find($request->head);
-
-        $head->update(['type' => 1]);
 
         $department = Department::create([
             'name' => $request->name,
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time
         ]);
 
         if($department)
         {
-            return redirect('admin/departments')->withStatus('departments successfully created');
+            return redirect('dashboard/departments')->withStatus('departments successfully created');
         }
         else
         {
-            return redirect('admin/departments')->withStatus('something went wrong, try again');
+            return redirect('dasboard/departments')->withStatus('something went wrong, try again');
         }
     }
 
@@ -94,7 +92,7 @@ class DepartmentController extends Controller
         }
         else
         {
-            return redirect('admin/departments')->withStatus('no departments have this id');
+            return redirect('dashboard/departments')->withStatus('no departments have this id');
         }
     }
 
@@ -121,13 +119,16 @@ class DepartmentController extends Controller
 
             $department->update([
                 'name' => $request->name,
+                'start_time' => $request->start_time,
+                'end_time' => $request->end_time
+
             ]);
 
-            return redirect('/admin/departments')->withStatus('departments successfully updated');
+            return redirect('dashboard/departments')->withStatus('departments successfully updated');
         }
         else
         {
-            return redirect('/admin/departments')->withStatus('no departments have this id');
+            return redirect('dashboard/departments')->withStatus('no departments have this id');
         }
     }
 
@@ -145,9 +146,9 @@ class DepartmentController extends Controller
         if($department)
         {
             $department->delete();
-            return redirect('/admin/departments')->withStatus(__('departments successfully deleted.'));
+            return redirect('dashboard/departments')->withStatus(__('departments successfully deleted.'));
         }
-        return redirect('/admin/departments')->withStatus(__('this id is not in our database'));
+        return redirect('dashboard/departments')->withStatus(__('this id is not in our database'));
     }
 
 }

@@ -22,7 +22,7 @@ class EmployeeController extends Controller
         }
         else
         {
-            $employees = User::where('type', 2)->where('dept_id',$department_id)->orderBy('id', 'desc')->get();
+            $employees = User::where('type', 2)->where('department_id',$department_id)->orderBy('id', 'desc')->get();
         }
 
         return view('employees.index',compact('employees'));
@@ -63,16 +63,17 @@ class EmployeeController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'department_id' => $request->department_id
+            'department_id' => $request->department_id,
+            'type' => 2
         ]);
 
         if($employee)
         {
-            return redirect('admin/employees')->withStatus('employees successfully created');
+            return redirect('dashboard/employees')->withStatus('employees successfully created');
         }
         else
         {
-            return redirect('admin/employees')->withStatus('something went wrong, try again');
+            return redirect('dashboard/employees')->withStatus('something went wrong, try again');
         }
     }
 
@@ -104,7 +105,23 @@ class EmployeeController extends Controller
         }
         else
         {
-            return redirect('admin/employees')->withStatus('no employees have this id');
+            return redirect('dasboard/employees')->withStatus('no employees have this id');
+        }
+    }
+
+    public function employee_requests($employee_id)
+    {
+        //
+        $employee = User::find($employee_id);
+
+        if($employee)
+        {
+            $requests = $employee->requests();
+            return view('employees.requests', compact('requests','employee'));
+        }
+        else
+        {
+            return redirect('admins/employees')->withStatus('no employees have this id');
         }
     }
 
@@ -140,11 +157,11 @@ class EmployeeController extends Controller
                     'department_id' => $request->department_id
                 ]);
 
-                return redirect('/admin/employees')->withStatus('employees information successfully updated.');
+                return redirect('dashboard/employees')->withStatus('employees information successfully updated.');
             }
             else
             {
-                return redirect('admin/employees')->withStatus('no admin with this id');
+                return redirect('dashboard/employees')->withStatus('no admins with this id');
             }
         }
         else {
@@ -173,11 +190,11 @@ class EmployeeController extends Controller
                     'department_id' => $request->department_id
 
                 ]);
-                return redirect('/admin/employees')->withStatus('employees information successfully updated.');
+                return redirect('dashboard/employees')->withStatus('employees information successfully updated.');
             }
             else
             {
-                return redirect('admin/employees')->withStatus('no employees with this id');
+                return redirect('dashboard/employees')->withStatus('no employees with this id');
             }
         }
     }
@@ -196,8 +213,8 @@ class EmployeeController extends Controller
         if($employee)
         {
             $employee->delete();
-            return redirect('/admin/employees')->withStatus(__('employees successfully deleted.'));
+            return redirect('dashboard/employees')->withStatus(__('employees successfully deleted.'));
         }
-        return redirect('/admin/employees')->withStatus(__('this id is not in our database'));
+        return redirect('dashboard/employees')->withStatus(__('this id is not in our database'));
     }
 }

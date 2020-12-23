@@ -31,7 +31,7 @@
                             <div class="card-header">
                                 <h3 class="card-title">
 
-                                    @if(isset($vendor))
+                                    @if(isset($admin))
                                         {{ __('edit admin info') }}
                                     @else
                                         {{ __('add admin') }}
@@ -50,9 +50,6 @@
 
                                 @endif
 
-
-
-
                                 <div class="card-body">
 
                                     <div class="form-group">
@@ -67,7 +64,7 @@
 
 
                                     <div class="form-group">
-                                        <label for="exampleInputEmail1"> {{ __('admin.email') }}</label>
+                                        <label for="exampleInputEmail1"> {{ __('email') }}</label>
                                         <input type="email" value="@if(isset($admin)){{$admin->email }} @endif" name="email" class="@error('email') is-invalid @enderror form-control" id="exampleInputEmail1" placeholder="Enter email" required>
                                         @error('email')
                                         <span class="invalid-feedback" role="alert">
@@ -77,10 +74,8 @@
                                     </div>
 
                                     <div class="form-group">
-                                        <label for="exampleInputPassword1"> {{ __('admin.password') }}</label>
-
-                                        <input type="password" class="@error('password') is-invalid @enderror form-control" id="exampleInputPassword1" name="password" placeholder="Password" value="">
-
+                                        <label for="exampleInputPassword1">New Password</label>
+                                        <input type="password" class="@error('password') is-invalid @enderror form-control" id="exampleInputPassword1" name="password" placeholder="Password">
                                         @error('password')
                                         <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -88,46 +83,11 @@
                                         @enderror
                                     </div>
 
-                                    <div class="form-group row">
-                                        <label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
-
-                                        <div class="col-md-6">
-                                            <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
-                                        </div>
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="input-password-confirmation">{{ __('Confirm New Password') }}</label>
+                                        <input type="password" name="password_confirmation" id="input-password-confirmation" class="form-control form-control-lg" placeholder="{{ __('Confirm New Password') }}" value="">
                                     </div>
 
-
-                                    @if(isset($admin))
-
-                                        <div class="form-group">
-                                            <label for="exampleInputFile">{{ __('admin image') }}</label>
-                                            <div class="input-group">
-                                                <div class="custom-file">
-
-                                                    <img style="width:80px;height:80px;margin-right:10px;margin-top: 30px;" src="{{ asset('images') }}/{{$admin->image}}" class="card-img-top" alt="Course Photo">
-
-                                                    <input type="checkbox" checked style="margin-right:10px;" name="checkedimage" value="{{$admin->image}}">
-
-                                                    <input name="image" type="file">
-
-                                                </div>
-                                            </div>
-                                        </div>
-                                    @else
-
-                                        <div class="form-group">
-                                            <div class="form-group" style="margin-bottom: 10px">
-                                                <label for="exampleInputFile">{{__('image')}}</label>
-
-                                                 <div class="form-group">
-
-                                                    <input type="file" name="image" class="form-control-file" id="exampleFormControlFile1">
-                                                  </div>
-                                            </div>
-                                        </div>
-
-
-                                    @endif
 
                                 </div>
                                 <!-- /.card-body -->

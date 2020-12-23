@@ -47,6 +47,7 @@ class HeadController extends Controller
             'email' => ['required', 'email', Rule::unique((new User)->getTable()), 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,3}$/'],
             'password' => ['required', 'min:8', 'confirmed','regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$@#%]).*$/'],
             'password_confirmation' => ['required', 'min:8'],
+            'department_id' => ['required', 'min:0' , 'integer'],
         ];
 
         $this->validate($request,$rules);
@@ -56,15 +57,17 @@ class HeadController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'department_id' => $request->department_id,
+            'type' => 1
         ]);
 
         if($head)
         {
-            return redirect('admin/heads')->withStatus('heads successfully created');
+            return redirect('dashboard/heads')->withStatus('heads successfully created');
         }
         else
         {
-            return redirect('admin/heads')->withStatus('something went wrong, try again');
+            return redirect('dashboard/heads')->withStatus('something went wrong, try again');
         }
     }
 
@@ -88,6 +91,16 @@ class HeadController extends Controller
     public function edit($id)
     {
         //
+        $head = User::find($id);
+
+        if($head)
+        {
+            return view('heads.create', compact('head'));
+        }
+        else
+        {
+            return redirect('dashboard/heads')->withStatus('no heads have this id');
+        }
     }
 
     /**
@@ -99,7 +112,70 @@ class HeadController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $head = User::find($id);
+
+        if($request->input('password') == null )
+        {
+            $rules = [
+
+                'name' => ['required','min:2','max:60','not_regex:/([%\$#\*<>]+)/'],
+                'email' => ['required', 'email', Rule::unique((new User)->getTable())->ignore($head->id), 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,3}$/'],
+                'department_id' => ['required','min:0','integer']
+            ];
+
+            $this->validate($request,$rules);
+
+
+            if($head)
+            {
+
+                $head->update([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'department_id' => $request->department_id
+                ]);
+
+                return redirect('/dashboard/heads')->withStatus('head information successfully updated.');
+            }
+            else
+            {
+                return redirect('/dashboard/heads')->withStatus('no head with this id');
+            }
+        }
+        else {
+            $rules = [
+                'name' => ['required','min:2','max:60','not_regex:/([%\$#\*<>]+)/'],
+                'email' => ['required', 'email', Rule::unique((new User)->getTable())->ignore($head->id), 'regex:/^[\w\-\.]+@([\w\-]+\.)+[\w\-]{2,3}$/'],
+                'password' => ['required', 'min:8', 'confirmed', 'different:old_password', 'regex:/^.*(?=.{3,})(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[\d\x])(?=.*[!$@#%]).*$/'],
+                'password_confirmation' => ['required', 'min:8'],
+                'department_id' => ['required','min:0','integer']
+
+            ];
+
+            $this->validate($request,$rules);
+
+
+            $password = password_hash($request->password,PASSWORD_DEFAULT);
+
+
+            if($head)
+            {
+                $head->update([
+
+                    'name' => $request->name ,
+                    'email' => $request->email ,
+                    'password' => $password,
+                    'department_id' => $request->department_id
+                ]);
+
+                return redirect('/dashboard/heads')->withStatus('head information successfully updated.');
+            }
+            else
+            {
+                return redirect('/dashboard/heads')->withStatus('no heads with this id');
+            }
+        }
     }
 
     /**
@@ -111,5 +187,13 @@ class HeadController extends Controller
     public function destroy($id)
     {
         //
+        $head = User::find($id);
+
+        if($head)
+        {
+            $head->delete();
+            return redirect('/dashboard/heads')->withStatus(__('head successfully deleted.'));
+        }
+        return redirect('/dashboard/heads')->withStatus(__('this id is not in our database'));
     }
 }

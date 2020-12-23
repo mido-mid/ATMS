@@ -16,7 +16,7 @@
 
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
-                            <li class="breadcrumb-item"><a href="{{route('admins.create')}}">{{ __('admin.vendor_create') }}</a></li>
+                            <li class="breadcrumb-item"><a href="{{route('admins.create')}}">{{ __('add new admin') }}</a></li>
                         </ol>
                     </div>
 
@@ -66,7 +66,7 @@
                                                         <i class="fas fa-ellipsis-v"></i>
                                                     </button>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                                        <form action="{{ route('vendors.destroy', $vendor->id) }}" method="post">
+                                                        <form action="{{ route('admins.destroy', $admin->id) }}" method="post">
                                                             @csrf
                                                             @method('delete')
 
@@ -76,7 +76,7 @@
                                                                 <button type="button" class="dropdown-item" onclick="confirm('{{ __("Are you sure you want to delete this vendor?") }}') ? this.parentElement.submit() : ''">{{ __('delete') }}</button>
 
                                                         </form>
-                                                        <a class="dropdown-item" href="{{ route('vendors.edit', $vendor->id) }}">{{ __('edit') }}</a>
+                                                        <a class="dropdown-item" href="{{ route('admins.edit', $admin->id) }}">{{ __('edit') }}</a>
 
                                                     </div>
                                                 </div>

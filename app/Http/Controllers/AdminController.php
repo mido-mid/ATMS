@@ -58,15 +58,16 @@ class AdminController extends Controller
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'type' => 0
         ]);
 
         if($admin)
         {
-            return redirect('admin/admins')->withStatus('admin successfully created');
+            return redirect('dashboard/admins')->withStatus('admins successfully created');
         }
         else
         {
-            return redirect('admin/admins')->withStatus('something went wrong, try again');
+            return redirect('dashboard/admins')->withStatus('something went wrong, try again');
         }
     }
 
@@ -98,7 +99,7 @@ class AdminController extends Controller
         }
         else
         {
-            return redirect('admin/admins')->withStatus('no admin have this id');
+            return redirect('dashboard/admins')->withStatus('no admins have this id');
         }
     }
 
@@ -134,11 +135,11 @@ class AdminController extends Controller
                     'email' => $request->email,
                 ]);
 
-                return redirect('/admin/admins')->withStatus('admin information successfully updated.');
+                return redirect('/dashboard/admins')->withStatus('admins information successfully updated.');
             }
             else
             {
-                return redirect('admin/admins')->withStatus('no admin with this id');
+                return redirect('/dashboard/admins')->withStatus('no admins with this id');
             }
         }
         else {
@@ -164,11 +165,11 @@ class AdminController extends Controller
                     'password' => $password,
                 ]);
 
-                return redirect('/admin/admins')->withStatus('admin information successfully updated.');
+                return redirect('/dashboard/admins')->withStatus('admins information successfully updated.');
             }
             else
             {
-                return redirect('admin/admins')->withStatus('no admin with this id');
+                return redirect('/dashboard/admins')->withStatus('no admins with this id');
             }
         }
     }
@@ -187,8 +188,8 @@ class AdminController extends Controller
         if($admin)
         {
             $admin->delete();
-            return redirect('/admin/admins')->withStatus(__('Admin successfully deleted.'));
+            return redirect('/dashboard/admins')->withStatus(__('Admin successfully deleted.'));
         }
-        return redirect('/admin/admins')->withStatus(__('this id is not in our database'));
+        return redirect('/dashboard/admins')->withStatus(__('this id is not in our database'));
     }
 }

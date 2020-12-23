@@ -56,11 +56,11 @@ class QuestionController extends Controller
 
         if($question)
         {
-            return redirect('admin/questions')->withStatus('question successfully created');
+            return redirect('dashboard/questions')->withStatus('question successfully created');
         }
         else
         {
-            return redirect('admin/questions')->withStatus('something went wrong, try again');
+            return redirect('dashboard/questions')->withStatus('something went wrong, try again');
         }
     }
 
@@ -92,7 +92,7 @@ class QuestionController extends Controller
         }
         else
         {
-            return redirect('admin/questions')->withStatus('no question have this id');
+            return redirect('dashboard/questions')->withStatus('no question have this id');
         }
     }
 
@@ -108,7 +108,6 @@ class QuestionController extends Controller
         //
         $rules = [
             'description' => ['required','min:2','max:60','not_regex:/([%\$#\*<>]+)/'],
-            'status' => ['required','string'],
         ];
 
         $this->validate($request,$rules);
@@ -119,14 +118,13 @@ class QuestionController extends Controller
 
             $question->update([
                 'description' => $request->description,
-                'status' => $request->status,
             ]);
 
-            return redirect('/admin/questions')->withStatus('question successfully updated');
+            return redirect('/dashboard/questions')->withStatus('question successfully updated');
         }
         else
         {
-            return redirect('/admin/questions')->withStatus('no question have this id');
+            return redirect('/dashboard/questions')->withStatus('no question have this id');
         }
     }
 
@@ -145,35 +143,27 @@ class QuestionController extends Controller
         if($question)
         {
             $question->delete();
-            return redirect('/admin/questions')->withStatus(__('question successfully deleted.'));
+            return redirect('/dashboard/questions')->withStatus(__('question successfully deleted.'));
         }
-        return redirect('/admin/questions')->withStatus(__('this id is not in our database'));
+        return redirect('/dashboard/questions')->withStatus(__('this id is not in our database'));
     }
 
-    public function status(Request $request,$id)
+    public function status(Request $request,$question_id)
     {
 
-        $question = Question::find($id);
+        $question = Question::find($question_id);
 
-        $active_questions = Question::where('status','active')->get();
 
-        if(count($active_questions) == 2)
-        {
-            return redirect()->back()->withStatus(__('you can not actvate more than two questions'));
-        }
-        else {
+        if($question) {
 
-            if($question) {
+            if ($question->status == 'active') {
 
-                if ($question->status == 'active') {
-
-                    $question->update(['status' => 'inactive']);
-                } else {
-                    $question->update(['status' => 'active']);
-                }
-                return redirect()->back()->withStatus(__('question status successfully updated.'));
+                $question->update(['status' => 'inactive']);
+            } else {
+                $question->update(['status' => 'active']);
             }
-            return redirect()->back()->withStatus(__('this id is not in our database'));
+            return redirect()->back()->withStatus(__('question status successfully updated.'));
         }
+        return redirect()->back()->withStatus(__('this id is not in our database'));
     }
 }

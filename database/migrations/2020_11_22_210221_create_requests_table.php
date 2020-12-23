@@ -19,7 +19,7 @@ class CreateRequestsTable extends Migration
             $table->dateTime('check_out')->nullable();
             $table->unsignedBigInteger('employee_id');
             $table->text('reason')->nullable();
-            $table->unsignedInteger('status');
+            $table->string('status');
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');

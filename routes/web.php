@@ -37,22 +37,31 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix' => 'admin','middleware' => ['auth','admin']],function() {
+Route::group(['prefix' => 'dashboard','middleware' => ['auth']],function() {
 
     Route::get('/home', 'HomeController@index')->name('home');
     Route::get('', 'HomeController@index')->name('home');
-    Route::resource('admins', 'Admin\AdminController');
-    Route::resource('departments', 'Admin\DepartmentController');
-    Route::resource('employees', 'Admin\EmployeeController');
-    Route::resource('questions', 'Admin\QuestionController');
-});
+    Route::resource('admins', 'AdminController');
+    Route::resource('departments', 'DepartmentController');
+    Route::resource('questions', 'QuestionController');
+    Route::resource('heads', 'HeadController');
 
-Route::group(['prefix' => 'heads','middleware' => ['auth','heads']],function() {
+    Route::put('questions/status/{question_id}', 'QuestionController@status')->name('questions.status');
 
-    Route::resource('employees', 'Admin\EmployeeController', ['except' => ['store','create','delete']]);
-});
 
-Route::group(['prefix' => 'employees','middleware' => ['auth','employees','verified']],function() {
+    Route::resource('employees', 'EmployeeController');
 
-    Route::resource('admins', 'Admin\AdminController', ['except' => ['show']]);
+    Route::get('employee/{department_id?}','EmployeeController@index')->name('employee.index');
+
+
+    Route::post('check_in/{employee_id}', 'RequestController@check_in')->name('check_in');
+    Route::put('check_out/{request_id}', 'RequestController@check_out')->name('check_out');
+    Route::get('requests/{department_id?}', 'RequestController@index')->name('requests.index');
+    Route::get('employee_requests/{employee_id}', 'EmployeeController@employee_requests')->name('employee.requests');
+
+
+    Route::get('profile', ['as' => 'profile.edit', 'uses' => 'ProfileController@edit']);
+    Route::put('profile', ['as' => 'profile.update', 'uses' => 'ProfileController@update']);
+    Route::put('profile/password', ['as' => 'profile.password', 'uses' => 'ProfileController@password']);
+
 });
