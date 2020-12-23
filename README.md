@@ -7,6 +7,20 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
 </p>
 
+## Description
+
+ATMS(Attendance Management System) is a web application for monitoring and managing the attendance of employees and their departments through user friendly and easy to use dashboard.
+
+## Usage
+
+- Clone the repository with git clone
+- Run composer install
+- create your database on phpmyadmin
+- import .sql file in your database
+- make a copy of the .env.example file and rename this copy to .env
+- Rename DB_DATABASE in .env file with your database name
+- then the website will be ready to run it.
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
